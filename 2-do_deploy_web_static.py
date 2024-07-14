@@ -24,16 +24,12 @@ def do_deploy(archive_path):
     if os.path.isfile(archive_path) is False:
         return False
     file = archive_path.split("/")[-1]
-    # filename is <web_static_2021041409349.tgz>
     name = file.split(".")[0]
-    # '/data/web_static/current'
     if put(archive_path, "/tmp/{}".format(file)).failed is True:
         return False
-    # Upload the archive to the /tmp/ directory of the web server
     if run("rm -rf /data/web_static/releases/{}/".
             format(name)).failed is True:
         return False
-    # Uncompress the archive to the folder /data/web_static/releases/
     if run("mkdir -p /data/web_static/releases/{}/".
             format(name)).failed is True:
         return False
@@ -45,5 +41,4 @@ def do_deploy(archive_path):
     if run("rm -rf /data/web_static/releases/{}/ /data/web_static/current"
             format(name)).failed is True:
         return False
-    # Delete the symbolic link /data/web_static/current from the web server
     return True
